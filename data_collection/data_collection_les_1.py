@@ -41,7 +41,7 @@ def getVideosForYouTubeChanel(chanelId, max_result, your_api_key):
 
     response = requests.get('https://www.googleapis.com/youtube/v3/search', params=params)
     data = response.json()
-    # print(data)
+
     try:
         for item in data['items']:
             print(f"https://www.youtube.com/watch?v={item['id']['videoId']}")
