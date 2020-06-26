@@ -42,18 +42,4 @@ def getSuperJobVacanciesDescription():
     print(v.to_string())
 
 
-def getHHVacancies():
-    hh_url = 'https://m.hh.ru'
-    name = input('Введите название вакансии: ')
-
-    request_url = f'{hh_url}/search/vacancy?area=1&st=searchVacancy&text={name}&fromSearch=true'
-    response = requests.get(request_url).text
-    soup = bs(response, 'lxml')
-    pprint(soup)
-    # vacancies_list = soup.find_all('div')
-    # pprint(len(vacancies_list))
-
-
 getSuperJobVacanciesDescription()
-
-getHHVacancies()
