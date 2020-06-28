@@ -42,4 +42,36 @@ def getSuperJobVacanciesDescription():
     print(v.to_string())
 
 
+def get_hh_vacancies_description():
+    hh_url = 'https://www.hh.ru'
+    header = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.106 Safari/537.36',
+        'Accept': '*/*'}
+    name = input('Введите название вакансии: ')
+
+    request_url = f'{hh_url}/search/vacancy?area=1&st=searchVacancy&text={name}&fromSearch=true'
+    response = requests.get(request_url, headers=header).text
+
+    soup = bs(response, 'lxml')
+    vacancies_list = soup.find_all('div', {'class': 'vacancy-serp-item'})
+    pprint(len(vacancies_list))
+
+    vacancies = []
+    for vacancy in vacancies_list:
+        vacancy_data = {'name': vacancy.find('div', {'class': 'vacancy-serp-item__info'}).getText(),
+                        'salary': vacancy.find('div', {'class': 'vacancy-serp-item__sidebar'}).getText(),
+                        'link': vacancy.find('a', {'class': 'bloko-link HH-LinkModifier'})['href']}
+
+        employer_info = vacancy.find('div', {'class': 'vacancy-serp-item__meta-info'})
+        vacancy_data['employer_link'] = hh_url + employer_info.find('a')['href']
+        vacancy_data['company_name'] = employer_info.getText()
+        vacancy_data['address'] = vacancy.find('span', {'class': 'vacancy-serp-item__meta-info'}).getText()
+
+        vacancies.append(vacancy_data)
+
+    v = pd.DataFrame(vacancies)
+    print(v.to_string())
+
+
 getSuperJobVacanciesDescription()
+get_hh_vacancies_description()
