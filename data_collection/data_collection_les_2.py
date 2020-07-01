@@ -2,7 +2,6 @@ from bs4 import BeautifulSoup as bs
 import requests
 from pprint import pprint
 import pandas as pd
-import numpy as np
 from typing import List
 
 
@@ -32,7 +31,7 @@ def getSuperJobVacanciesDescription():
             salary_text = vacancy.find('span', {'class': '_3mfro _2Wp8I PlM3e _2JVkc _2VHxz'})\
                 .getText()\
                 .replace('\xa0', '')
-            salary_list: List[str] = getSalaryFromText(salary_text, '—')
+            salary_list = getSalaryFromText(salary_text, '—')
             vacancy_data['salary_min'] = salary_list[0]
             vacancy_data['salary_max'] = salary_list[1]
             vacancy_data['salary_currency'] = salary_list[2]
@@ -113,12 +112,13 @@ def get_hh_vacancies_description():
                 .getText()\
                 .replace('\xa0', '')\
                 .replace(' ', '')
-            salary_list: List[str] = getSalaryFromText(salary_text, '-')
+            salary_list = getSalaryFromText(salary_text, '-')
             vacancy_data['salary_min'] = salary_list[0]
             vacancy_data['salary_max'] = salary_list[1]
             vacancy_data['salary_currency'] = salary_list[2]
             vacancy_data['salary_text'] = salary_text
 
+            # company
             employer_info = vacancy.find('div', {'class': 'vacancy-serp-item__meta-info'})
             vacancy_data['employer_link'] = hh_url + employer_info.find('a')['href']
             vacancy_data['company_name'] = employer_info.getText()
