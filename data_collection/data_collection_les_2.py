@@ -15,13 +15,12 @@ class VacanciesScrapper:
         name = input('Введите название вакансии латинскими буквами: ')
 
         path = f'/vakansii/{name}.html?geo%5Bt%5D%5B0%5D=4'
-        request_url = f'{superjob_url}{path}'
         page = 0
         pages_max = 2
 
         while page < 2:
 
-            response = requests.get(request_url).text
+            response = requests.get(f'{superjob_url}{path}').text
             soup = bs(response, 'lxml')
             vacancies_list = soup.find_all('div', {'class': 'Fo44F QiY08 LvoDO'})
             pprint(len(vacancies_list))
@@ -70,13 +69,12 @@ class VacanciesScrapper:
         name = input('Введите название вакансии: ')
 
         path = f'/search/vacancy?area=1&st=searchVacancy&text={name}&fromSearch=true'
-        request_url = f'{hh_url}{path}'
         page = 0
         pages_max = 2
 
         while page < 2:
 
-            response = requests.get(request_url, headers=header).text
+            response = requests.get(f'{hh_url}{path}', headers=header).text
 
             soup = bs(response, 'lxml')
             vacancies_list = soup.find_all('div', {'class': 'vacancy-serp-item'})
@@ -146,7 +144,13 @@ class VacanciesScrapper:
 
 
 vacancies_scrapper = VacanciesScrapper()
+# vacancies_scrapper.vacancies.delete_many({})
 
 vacancies_scrapper.getSuperJobVacanciesDescription()
 vacancies_scrapper.get_hh_vacancies_description()
 vacancies_scrapper.getVacanciesWithSalariesBiggerThan(80000)
+
+count = 0
+for vacancy in vacancies_scrapper.vacancies.find({}):
+    count += 1
+print(count)
