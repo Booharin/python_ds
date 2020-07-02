@@ -118,12 +118,12 @@ class VacanciesScrapper:
 
             if separator in text:
                 text_list = text.split(separator)
-                salary_list[0] = text_list[0]
-                salary_list[1] = text_list[1]
+                salary_list[0] = int(text_list[0])
+                salary_list[1] = int(text_list[1])
             elif 'от' in text:
-                salary_list[0] = text.replace('от', '')
+                salary_list[0] = int(text.replace('от', ''))
             elif 'до' in text:
-                salary_list[1] = text.replace('до', '')
+                salary_list[1] = int(text.replace('до', ''))
 
         else:
             salary_list[2] = None
@@ -131,23 +131,15 @@ class VacanciesScrapper:
         return salary_list
 
     def getVacanciesWithSalariesBiggerThan(self, salary):
-        for vacancy in self.vacancies.find({}):
-            if vacancy['salary_min'] is not None:
-                if int(vacancy['salary_min']) > salary:
-                    print(vacancy)
-                elif vacancy['salary_max'] is not None:
-                    if int(vacancy['salary_max']) > salary:
-                        print(vacancy)
-            elif vacancy['salary_max'] is not None:
-                if int(vacancy['salary_max']) > salary:
-                    print(vacancy)
+        for vac in self.vacancies.find({'$or': [{'salary_min': {'$gt': salary}}, {'salary_max': {'$gt': salary}}]}):
+            pprint(vac)
 
 
 vacancies_scrapper = VacanciesScrapper()
 # vacancies_scrapper.vacancies.delete_many({})
 
-vacancies_scrapper.getSuperJobVacanciesDescription()
-vacancies_scrapper.get_hh_vacancies_description()
+# vacancies_scrapper.getSuperJobVacanciesDescription()
+# vacancies_scrapper.get_hh_vacancies_description()
 vacancies_scrapper.getVacanciesWithSalariesBiggerThan(80000)
 
 count = 0
