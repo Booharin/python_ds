@@ -8,6 +8,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 from pymongo import MongoClient
 
 
+# 1
 class MailsParser:
     # driver
     chrome_options = Options()
@@ -41,7 +42,6 @@ class MailsParser:
         )
 
         mails = self.driver.find_elements_by_class_name('llc')
-        print(len(mails))
 
         # scroll to bottom
         last_mail = mails[0]
@@ -74,7 +74,7 @@ class MailsParser:
                 actions.perform()
 
         # save mail text
-        for mail_elem in mails_parser.mails.find({}):
+        for mail_elem in self.mails.find({}):
             mail_link = mail_elem['mail_link']
             self.driver.get(mail_link)
             text_body = WebDriverWait(self.driver, 3).until(
