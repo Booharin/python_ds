@@ -138,8 +138,8 @@ class VacanciesScrapper:
 vacancies_scrapper = VacanciesScrapper()
 # vacancies_scrapper.vacancies.delete_many({})
 
-# vacancies_scrapper.getSuperJobVacanciesDescription()
-# vacancies_scrapper.get_hh_vacancies_description()
+vacancies_scrapper.getSuperJobVacanciesDescription()
+vacancies_scrapper.get_hh_vacancies_description()
 vacancies_scrapper.getVacanciesWithSalariesBiggerThan(80000)
 
 count = 0
