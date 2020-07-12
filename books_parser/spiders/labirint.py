@@ -32,5 +32,3 @@ class LabirintSpider(scrapy.Spider):
             price_with_discount=price_with_discount,
             rate=rate
         )
-
-        print(1)
